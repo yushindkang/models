@@ -19,7 +19,7 @@ ENV MNT_POINT /data
 RUN --mount=type=secret,id=AWS_REGION \
 --mount=type=secret,id=AWS_KEY \
 --mount=type=secret,id=AWS_SECRET_KEY \
-export AWS_REGION=$(cat /run/secrets/AWS_REGION) && \
+export S3_REGION=$(cat /run/secrets/AWS_REGION) && \
 export AWS_KEY=$(cat /run/secrets/AWS_KEY) && \
 export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY)
 
