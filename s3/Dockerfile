@@ -17,11 +17,14 @@ ENV MNT_POINT /data
 # ARG AWS_KEY=$AWS_KEY 
 # ARG AWS_SECRET_KEY=$AWS_SECRET_KEY 
 RUN --mount=type=secret,id=AWS_REGION \
---mount=type=secret,id=AWS_KEY \
---mount=type=secret,id=AWS_SECRET_KEY \
-export S3_REGION=$(cat /run/secrets/AWS_REGION) && \
-export AWS_KEY=$(cat /run/secrets/AWS_KEY) && \
-export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY)
+    --mount=type=secret,id=AWS_KEY \
+    --mount=type=secret,id=AWS_SECRET_KEY \
+    export S3_REGION=$(cat /run/secrets/AWS_REGION) && \
+    export AWS_KEY=$(cat /run/secrets/AWS_KEY) && \
+    export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY) \
+    echo $S3_REGION \
+    echo $AWS_KEY \
+    echo $AWS_SECRET_KEY
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y update --fix-missing && \
