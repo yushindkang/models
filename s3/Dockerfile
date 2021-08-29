@@ -13,10 +13,18 @@ FROM ubuntu:14.04
 ENV DUMB_INIT_VER 1.2.0
 ENV S3_BUCKET mlops-platform-training-data
 ENV MNT_POINT /data
-ARG S3_REGION=$AWS_REGION
-ARG AWS_KEY=$AWS_KEY 
-ARG AWS_SECRET_KEY=$AWS_SECRET_KEY 
- 
+# ARG S3_REGION=$AWS_REGION
+# ARG AWS_KEY=$AWS_KEY 
+# ARG AWS_SECRET_KEY=$AWS_SECRET_KEY 
+RUN --mount=type=secret,id=AWS_REGION \
+--mount=type=secret,id=AWS_KEY \
+--mount=type=secret,id=AWS_SECRET_KEY \
+export AWS_REGION=$(cat /run/secrets/AWS_REGION) && \
+export AWS_KEY=$(cat /run/secrets/AWS_KEY) && \
+export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY) && \
+yarn gen
+
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y update --fix-missing && \
     apt-get install -y automake autotools-dev g++ git libcurl4-gnutls-dev wget \
                        libfuse-dev libssl-dev libxml2-dev make pkg-config && \

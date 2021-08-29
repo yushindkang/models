@@ -32,7 +32,7 @@ spec:
                       path: /mnt/data-s3fs
             containers:
                 - name: s3fs
-                  image: kangy92/sf3s:latest
+                  image: kangy92/s3fs:latest
                   imagePullPolicy: Always
                   securityContext:
                       privileged: true
