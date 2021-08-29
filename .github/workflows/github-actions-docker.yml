@@ -25,4 +25,7 @@ jobs:
           context: ./s3
           push: true 
           tags: kangy92/s3fs:latest
-          build-args: AWS_REGION=${{ secrets.AWS_DEFAULT_REGION }}, AWS_KEY=${{secrets.AWS_ACCESS_KEY_ID}}, AWS_SECRET_KEY={{secrets.AWS_SECRET_ACCESS_KEY}}
+          secrets: |
+            "AWS_REGION=${{ secrets.AWS_DEFAULT_REGION }}"
+            "AWS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }}"
+            "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
