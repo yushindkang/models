@@ -49,7 +49,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get purge -y wget automake autotools-dev 
 #ENTRYPOINT ["/usr/bin/dumb-init", "--"]
  
 # CMD exec /usr/local/bin/s3fs $S3_BUCKET $MNT_POINT -f -o endpoint=${S3_REGION},allow_other,use_cache=/tmp,max_stat_cache_size=1000,stat_cache_expire=900,retries=5,connect_timeout=10
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c", "--", "while true; do sleep 30; done;"]
 
 # FROM ubuntu:14.04
 # WORKDIR /dataset
