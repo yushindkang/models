@@ -53,13 +53,13 @@ spec:
                       - name: S3_BUCKET
                         value: mlops-platform-training-data
                       - name: S3_REGION
-                        value: ap-southeast-2
+                        value: 
                       - name: MNT_POINT
                         value: /data
                       - name: AWS_KEY
-                        value: AKIARUIKASBOQHUGO7FL
+                        value: 
                       - name: AWS_SECRET_KEY
-                        value: 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
+                        value: 
                   volumeMounts:
                       - name: devfuse
                         mountPath: /dev/fuse
