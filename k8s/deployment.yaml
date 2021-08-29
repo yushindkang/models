@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ml
+    selfLink: /apis/extensions/v1beta1/namespaces/deployments/s3fs
+    labels:
+        app: s3fs
+spec:
+    replicas: 1
+    revisionHistoryLimit: 3
+    selector:
+        matchLabels:
+            app: s3fs
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 1
+            maxUnavailable: 0
+    template:
+        metadata:
+            creationTimestamp: null
+            labels:
+                app: s3fs
+                tier: storage
+        spec:
+            volumes:
+                - name: devfuse
+                  hostPath:
+                      path: /dev/fuse
+                - name: s3fs-store
+                  hostPath:
+                      path: /mnt/data-s3fs
+            containers:
+                - name: s3fs
+                  image: kangy92/sf3s:latest
+                  imagePullPolicy: Always
+                  securityContext:
+                      privileged: true
+                      # capabilities:
+                      #   add:
+                      #     - SYS_ADMIN
+                      #     - MKNOD
+                  resources:
+                      requests:
+                          cpu: 100m
+                          memory: 128Mi
+                      limits:
+                          cpu: 300m
+                          memory: 256Mi
+                  env:
+                      - name: DUMB_INIT_VER
+                        value: 1.2.0
+                      - name: S3_BUCKET
+                        value: mlops-platform-training-data
+                      - name: S3_REGION
+                        value: ap-southeast-2
+                      - name: MNT_POINT
+                        value: /data
+                      - name: AWS_KEY
+                        value: AKIARUIKASBOQHUGO7FL
+                      - name: AWS_SECRET_KEY
+                        value: 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
+                  volumeMounts:
+                      - name: devfuse
+                        mountPath: /dev/fuse
+                      - name: s3fs-store
+                        mountPath: /data:shared
+                  # command: ["/bin/sh"]
+                  # args: ["-c", "echo Hello from the s3fs container > /dev/fuse/test.txt"]
+                - name: mljob
+                  image: kangy92/fruits_classifier:latest
+                  volumeMounts:
+                      - name: s3fs-store
+                        mountPath: /k8s_python/Dataset:shared
+                  resources:
+                        requests:
+                            cpu: 100m
+                            memory: 128Mi
+                        limits:
+                            cpu: 1500m
+                            memory: 300Mi
+                  stdin: true
+                  tty: true
+                  #command: ["/bin/bash", "-c", "--"]
+                  #args: ["while true; do sleep 30; done;"]
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+            securityContext: {}
+            terminationGracePeriodSeconds: 30
