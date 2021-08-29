@@ -21,9 +21,9 @@ RUN --mount=type=secret,id=AWS_REGION \
     --mount=type=secret,id=AWS_SECRET_KEY \
     export S3_REGION=$(cat /run/secrets/AWS_REGION) && \
     export AWS_KEY=$(cat /run/secrets/AWS_KEY) && \
-    export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY) \
-    echo $S3_REGION \
-    echo $AWS_KEY \
+    export AWS_SECRET_KEY=$(cat /run/secrets/AWS_SECRET_KEY) && \
+    echo $S3_REGION && \
+    echo $AWS_KEY && \
     echo $AWS_SECRET_KEY
 
 
